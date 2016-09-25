@@ -56,10 +56,10 @@ public class NippouRegisterScenario implements Scenario {
 		     
 		    int jissekiRecordSize = dailySagyouJissekiRecordList.size();
 		    
-		    // レコードが存在しないかつ、平日の祝日はスキップ
+		    // レコードが存在しないかつ、祝日はスキップ
 		    if(jissekiRecordSize == 0 && !DateStringUtil.isHoliday(kinmuDate) && DateStringUtil.isPublicHoliday(kinmuDate)) {
-		    	System.out.println(kinmuDate + weekStr + "はレコード0件、かつ" + 
-		    			DateStringUtil.getPublicHolidayName(kinmuDate) + "なのでスキップします。");
+		    	System.out.println(kinmuDate + weekStr + "はレコード0件、かつ祝日(" + 
+		    			DateStringUtil.getPublicHolidayName(kinmuDate) + ")なのでスキップします。");
 		    	continue;
 		    }
 
@@ -83,7 +83,7 @@ public class NippouRegisterScenario implements Scenario {
 			
 		    // レコードが存在する場合、作業計画一覧へ追加
 		    if(jissekiRecordSize != 0) {
-		    	System.out.println(kinmuDate + weekStr + "のレコードを" + sagyouJissekiRecordList.size() + "件登録します。");
+		    	System.out.println(kinmuDate + weekStr + "のレコードを" + jissekiRecordSize + "件登録します。");
 				// 出勤時間(時)
 		    	nippouDetailsPage.selectShukkinTimeHour(nippouRecord.getShukkinTimeHour());
 				// 出勤時間(分)

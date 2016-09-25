@@ -55,24 +55,25 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 		    String weekStr = "(" + DateStringUtil.getJapaneseWeekName(date) + ")";
 		    
 		    // 対象日のレコードを抽出
-		    List<SagyouKeikaku> dailySagyouKeikakuRecord = extractDailySagyouKeikakuRecord(sagyouKeikakuRecordList, date);
+		    List<SagyouKeikaku> dailySagyouKeikakuRecordList = extractdailySagyouKeikakuRecord(sagyouKeikakuRecordList, date);
 		    
-		    int recordSize = dailySagyouKeikakuRecord.size();
+		    int dailySagyouKeikakuRecordListSize = dailySagyouKeikakuRecordList.size();
 		    
 		    // レコードが存在しない
-		    if(recordSize == 0) {
+		    if(dailySagyouKeikakuRecordListSize == 0) {
 		    	System.out.println(date + weekStr + "はレコードが存在しません。");
 		    	continue;
 		    }
 		    
 		    // レコードが存在しないかつ、平日の祝日はスキップ
-		    if(recordSize == 0 && !DateStringUtil.isHoliday(date) && DateStringUtil.isPublicHoliday(date)) {
-		    	System.out.println(date + weekStr + "はレコード0件、かつ平日の祝日なのでスキップします。");
+		    if(dailySagyouKeikakuRecordListSize == 0 && !DateStringUtil.isHoliday(date) && DateStringUtil.isPublicHoliday(date)) {
+		    	System.out.println(date + weekStr + "はレコード0件、かつ祝日(" + 
+		    			DateStringUtil.getPublicHolidayName(date) + ")なのでスキップします。");
 		    	continue;
 		    }
 
 		    // レコードが存在しないかつ、休日かつ
-		    if(recordSize == 0 && DateStringUtil.isHoliday(date)) {
+		    if(dailySagyouKeikakuRecordListSize == 0 && DateStringUtil.isHoliday(date)) {
 		    	System.out.println(date + weekStr + "はレコード0件、かつ休日なのでスキップします。");
 		    	continue;
 		    }
@@ -81,14 +82,14 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 		    keikakuDetailsPage.clickDailyDateLink(date);
 		    
 		    // レコードが存在する場合、作業計画一覧へ追加
-		    if(recordSize >= 1) {
-		    	System.out.println(date + weekStr + "のレコードを" + recordSize + "件登録します。");
+		    if(dailySagyouKeikakuRecordListSize > 0) {
+		    	System.out.println(date + weekStr + "のレコードを" + dailySagyouKeikakuRecordListSize + "件登録します。");
 		    	
 		    	// 作業計画一覧フォーム取得
 				SagyouListForm sagyouListKeikakuForm = keikakuDetailsPage.getSagyouListKeikakuForm();
 				
 				// フォームへレコードを追加
-		    	for(SagyouKeikaku record : sagyouKeikakuRecordList) {
+		    	for(SagyouKeikaku record : dailySagyouKeikakuRecordList) {
 					sagyouListKeikakuForm.addRecord(record);
 		    	}
 		    }
@@ -97,7 +98,7 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 		    keikakuDetailsPage.clickKinmuKeikakuSaveButton();
 			
 			// 作業計画未追加時に表示される確認aleart対応
-		    if(recordSize == 0) {
+		    if(dailySagyouKeikakuRecordListSize == 0) {
 		    	keikakuDetailsPage.alertAccept();
 		    }
 		}
@@ -117,7 +118,7 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 	 * @param kinmuDate : 勤務日
 	 * @return 指定された勤務日に該当するレコードリスト
 	 */
-	public List<SagyouKeikaku> extractDailySagyouKeikakuRecord(List<SagyouKeikaku> sagyouKeikakuRecordList, String kinmuDate) {
+	public List<SagyouKeikaku> extractdailySagyouKeikakuRecord(List<SagyouKeikaku> sagyouKeikakuRecordList, String kinmuDate) {
 		List<SagyouKeikaku> list = new ArrayList<SagyouKeikaku>();
 		
 		for (SagyouKeikaku record : sagyouKeikakuRecordList) {

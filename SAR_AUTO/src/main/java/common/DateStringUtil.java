@@ -140,7 +140,7 @@ public class DateStringUtil {
 	 * 例2) date: 20160920, delimiter: /,  return: 2016/09/20      
 	 * </pre>
 	 * @param date : 日付文字列(区切り文字無し)
-	 * @param delimiter : 年月日区切り文字
+	 * @param delimiter : 日付区切り文字
 	 * @return 区切り文字付きの日付文字列
 	 */
 	public static String addDateStringDelimiter(String date, String delimiter) {
