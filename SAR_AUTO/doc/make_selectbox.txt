@@ -1,0 +1,69 @@
+//
+//
+// 日報の"追加"ボタンを押した際に出る作業一覧の入力フォームで
+// 自分の "部門名" と "PJ名" を選択した後、以下のコマンドを実行する
+// 
+// Chromeの場合 ： F12から開発者ツールのconsoleタブに貼り付ける →  Ctrl + a で全選択後、Enter
+//
+// Firefoxの場合： 開発ツール → スクラッチパッドを開く → Ctrl + a で全選択後、Ctrl + r で実行
+//                 F12を押すとコンソールタブの所に結果が吐かれている
+//
+// コンソールからコピーすると行番号とかがくっついてくるので コンソール上で右クリック → Save as でテキスト保存すると楽。
+
+
+console.log("***** セレクトボックス画面表示用 ********************************************************************");
+console.log("-- 部門名 ----------------------------------------------------------");
+var options = document.getElementById("sagyou_jisseki_view_bumon_name_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].innerHTML);
+}
+
+console.log("-- PJ名 ----------------------------------------------------------");
+options = document.getElementById("sagyou_jisseki_view_project_name_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].innerHTML);
+}
+
+console.log("-- 工程 ----------------------------------------------------------");
+options = document.getElementById("sagyou_jisseki_view_pj_koutei_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].innerHTML);
+}
+
+console.log("-- タスク ----------------------------------------------------------");
+options = document.getElementById("sagyou_jisseki_view_task_id_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].innerHTML);
+}
+
+
+console.log("***** セレクトボックスvalue属性 ********************************************************************");
+
+console.log("-- 部門名 ----------------------------------------------------------");
+var key = "bumon_name_value";
+var options = document.getElementById("sagyou_jisseki_view_bumon_name_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].value);
+}
+
+console.log("-- PJ名 ----------------------------------------------------------");
+key = "project_name_value";
+options = document.getElementById("sagyou_jisseki_view_project_name_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].value);
+}
+
+console.log("-- 工程 ----------------------------------------------------------");
+key = "pj_koutei_value";
+options = document.getElementById("sagyou_jisseki_view_pj_koutei_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].value);
+}
+
+console.log("-- タスク ----------------------------------------------------------");
+key = "task_id_value";
+options = document.getElementById("sagyou_jisseki_view_task_id_view0").options;
+for(var i=0;i<options.length;i++){
+	console.log(options[i].value);
+}
+
