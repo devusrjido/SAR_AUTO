@@ -3,7 +3,7 @@ package sar.page.geppou;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import main.ShoriKbn;
+import main.ProcKind;
 import sar.page.common.AbstractSARPage;
 
 /** 月報(一覧)ページクラス  */
@@ -23,7 +23,7 @@ public class GeppouListPage extends AbstractSARPage {
 	 * @return　月報(詳細)ページオブジェクト
 	 */
 	public GeppouDetailsPage clickUncreatedDateLink() {
-		getUncreatedDateElement(ShoriKbn.GEPPOU_REGISTER).click();
+		getUncreatedDateElement(ProcKind.GEPPOU_REGISTER).click();
 		waitForSARPageLoaded();
 		return new GeppouDetailsPage(_driver);
 	}

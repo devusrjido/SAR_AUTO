@@ -1,6 +1,6 @@
 package sar.scenario;
 
-import common.DateStringUtil;
+import library.DateStringUtil;
 import main.ScenarioParamKey;
 import sar.bean.ShuuhouJisseki;
 import sar.page.common.SARPageHeader;
@@ -18,18 +18,19 @@ import scenario.data.ScenarioDataHolder;
 public class ShuuhouJissekiRegisterScenario implements Scenario {
 	private ScenarioPameter _params;
 	
-	public ShuuhouJissekiRegisterScenario(ScenarioPameter params){
+	public ShuuhouJissekiRegisterScenario(ScenarioPameter params) {
 		_params = params;
 	}
-
+	
 	public void start() {
 		// シナリオパラメータを取得
 		ShuuhouJisseki sagyouJissekiRecord = (ShuuhouJisseki)_params.getObject(ScenarioParamKey.SHUUHOU_JISSEKI_REGISTER_RECORD);
 		
-		// 現在のページを取得
+		// 現在のページオブジェクトを取得
 		ScenarioDataHolder dataHolder = ScenarioDataHolder.getInstance();
 		Object currentPage = dataHolder.getObject(ScenarioParamKey.CURRENT_PAGE);
 		
+		// 
 		ShuuhouJissekiListPage jissekiListPage = null;
 		if ( currentPage instanceof ShuuhouJissekiListPage ) {
 			jissekiListPage = (ShuuhouJissekiListPage)currentPage;
@@ -74,11 +75,9 @@ public class ShuuhouJissekiRegisterScenario implements Scenario {
 		dataHolder.setValue(ScenarioParamKey.CURRENT_PAGE, currentPage);
 	}
 
-	public void error() {
-	}
+	public void error() {}
 	
-	public void always() {
-	}
+	public void always() {}
 	
 	public String getScenarioName(){
 		return "週報実績(登録)";

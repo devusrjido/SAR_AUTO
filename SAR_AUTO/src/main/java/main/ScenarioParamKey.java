@@ -21,5 +21,4 @@ public class ScenarioParamKey {
 	/** 作業実績(登録)レコード */
 	public static final String SAGYOU_JISSEKI_REGISTER_RECORD = "PARAM_KEY_SAGYOU_JISSEKI_REGISTER_RECORD";
 	
-	
 }

@@ -3,7 +3,7 @@ package sar.scenario;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.DateStringUtil;
+import library.DateStringUtil;
 import main.ScenarioParamKey;
 import sar.bean.SagyouKeikaku;
 import sar.page.common.SARPageHeader;
@@ -19,12 +19,12 @@ import scenario.data.ScenarioDataHolder;
  *　SARにて週報計画(登録)を行う 
  */
 public class ShuuhouKeikakuRegisterScenario implements Scenario {
-	ScenarioPameter _params;
+	private ScenarioPameter _params;
 	
-	public ShuuhouKeikakuRegisterScenario(ScenarioPameter params){
+	public ShuuhouKeikakuRegisterScenario(ScenarioPameter params) {
 		_params = params;
 	}
-
+	
 	public void start() {
 		// シナリオパラメータを取得
 		List<SagyouKeikaku> sagyouKeikakuRecordList = 
@@ -55,7 +55,7 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 		    String weekStr = "(" + DateStringUtil.getJapaneseWeekName(date) + ")";
 		    
 		    // 対象日のレコードを抽出
-		    List<SagyouKeikaku> dailySagyouKeikakuRecordList = extractdailySagyouKeikakuRecord(sagyouKeikakuRecordList, date);
+		    List<SagyouKeikaku> dailySagyouKeikakuRecordList = extractDailySagyouKeikakuRecord(sagyouKeikakuRecordList, date);
 		    
 		    int dailySagyouKeikakuRecordListSize = dailySagyouKeikakuRecordList.size();
 		    
@@ -118,7 +118,7 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 	 * @param kinmuDate : 勤務日
 	 * @return 指定された勤務日に該当するレコードリスト
 	 */
-	public List<SagyouKeikaku> extractdailySagyouKeikakuRecord(List<SagyouKeikaku> sagyouKeikakuRecordList, String kinmuDate) {
+	public List<SagyouKeikaku> extractDailySagyouKeikakuRecord(List<SagyouKeikaku> sagyouKeikakuRecordList, String kinmuDate) {
 		List<SagyouKeikaku> list = new ArrayList<SagyouKeikaku>();
 		
 		for (SagyouKeikaku record : sagyouKeikakuRecordList) {
@@ -130,11 +130,9 @@ public class ShuuhouKeikakuRegisterScenario implements Scenario {
 		return list;
 	}
 
-	public void error() {
-	}
+	public void error() {}
 	
-	public void always() {
-	}
+	public void always() {}
 	
 	public String getScenarioName(){
 		return "週報計画(登録)";

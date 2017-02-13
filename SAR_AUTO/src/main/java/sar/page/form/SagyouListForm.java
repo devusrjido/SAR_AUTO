@@ -2,8 +2,8 @@ package sar.page.form;
 
 import org.openqa.selenium.WebDriver;
 
-import common.WebDriverUtil;
-import main.ShoriKbn;
+import library.WebDriverUtil;
+import main.ProcKind;
 import sar.bean.SagyouJisseki;
 import sar.bean.SagyouKeikaku;
 import sar.page.common.CSSSelector;
@@ -17,9 +17,9 @@ public class SagyouListForm extends WebDriverUtil {
 		super(driver);
 		_index = 0;
 		
-		if (shoriKbn.equals(ShoriKbn.NIPPOU_REGISTER)) {
+		if (shoriKbn.equals(ProcKind.NIPPOU_REGISTER)) {
 			_shoriKbnStr = "jisseki";
-		} else if (shoriKbn.equals(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER)) {
+		} else if (shoriKbn.equals(ProcKind.SHUUHOU_KEIKAKU_REGISTER)) {
 			_shoriKbnStr = "keikaku";
 		}		
 	}

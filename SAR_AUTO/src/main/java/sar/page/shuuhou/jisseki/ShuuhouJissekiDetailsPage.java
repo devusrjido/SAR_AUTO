@@ -46,7 +46,7 @@ public class ShuuhouJissekiDetailsPage extends AbstractShuuhouPage {
 		waitForSARPageLoaded();
 	}
 	
-	/**
+	/**H
 	 * "申請"ボタン押下します。
 	 */
 	public ShuuhouJissekiListPage clickApplyJisseki() {

@@ -3,6 +3,7 @@ package sar.scenario;
 import org.openqa.selenium.WebDriver;
 
 import main.ScenarioParamKey;
+import sar.page.nippou.NippouListPage;
 import sar.page.notloginpage.SARLoginPage;
 import scenario.Scenario;
 import scenario.ScenarioPameter;
@@ -15,7 +16,7 @@ import scenario.data.ScenarioDataHolder;
 public class SARLoginScenario implements Scenario {
 	private ScenarioPameter _params;
 	
-	public SARLoginScenario(ScenarioPameter params){
+	public SARLoginScenario(ScenarioPameter params) {
 		_params = params;
 	}
 	
@@ -35,25 +36,24 @@ public class SARLoginScenario implements Scenario {
 		// パスワード
 		loginPage.typePassword(password);
 		
-		// ログイン
-		Object currentPage = loginPage.submitLoginButton();
+		// ログインボタンを押下
+		NippouListPage currentPage = loginPage.submitLoginButton();
 		
+		// 遷移失敗
 		if(currentPage == null) {
 			return;
 		}
 		
-		// 現在のページを更新
+		// 現在のページオブジェクトを更新
 		ScenarioDataHolder dataHolder = ScenarioDataHolder.getInstance();
 		dataHolder.setValue(ScenarioParamKey.CURRENT_PAGE, currentPage);
 		
 		System.out.println("ログインが成功しました。");
 	}
 
-	public void error() {
-	}
+	public void error() {}
 	
-	public void always() {
-	}
+	public void always() {}
 	
 	public String getScenarioName(){
 		return "SARログイン";

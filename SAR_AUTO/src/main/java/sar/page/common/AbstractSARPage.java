@@ -8,12 +8,12 @@ import java.util.Map;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import common.WebDriverUtil;
+import library.WebDriverUtil;
 import sar.page.geppou.GeppouListPage;
 import sar.page.nippou.NippouListPage;
 import sar.page.notloginpage.SARLoginPage;
 import sar.page.shuuhou.keikaku.ShuuhouKeikakuListPage;
-import main.ShoriKbn;
+import main.ProcKind;
 
 /** SARページ親クラス */
 public abstract class AbstractSARPage extends WebDriverUtil implements SARPageHeader {
@@ -167,9 +167,9 @@ public abstract class AbstractSARPage extends WebDriverUtil implements SARPageHe
 	 */
 	protected String buildSelector(String[] selector, String shoriKbn, int index) {
 		String s = "";
-		if(shoriKbn.equals(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER)) {
+		if(shoriKbn.equals(ProcKind.SHUUHOU_KEIKAKU_REGISTER)) {
 			s = "keikaku";
-		} else if(shoriKbn.equals(ShoriKbn.NIPPOU_REGISTER)) {
+		} else if(shoriKbn.equals(ProcKind.NIPPOU_REGISTER)) {
 			s = "jisseki";
 		}
 		return selector[0] + s + selector[1] + index; 
@@ -181,13 +181,13 @@ public abstract class AbstractSARPage extends WebDriverUtil implements SARPageHe
 	 * @return 処理区分文字列
 	 */
 	protected String getShoriKbnString(String shoriKbn) {
-		if (shoriKbn.equals(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER)) {
+		if (shoriKbn.equals(ProcKind.SHUUHOU_KEIKAKU_REGISTER)) {
 			return "keikaku";
-		} else if(shoriKbn.equals(ShoriKbn.SHUUHOU_JISSEKI_REGISTER)) {
+		} else if(shoriKbn.equals(ProcKind.SHUUHOU_JISSEKI_REGISTER)) {
 			return "jisseki";
-		} else if(shoriKbn.equals(ShoriKbn.NIPPOU_REGISTER)) {
+		} else if(shoriKbn.equals(ProcKind.NIPPOU_REGISTER)) {
 			return "nippou";
-		} else if(shoriKbn.equals(ShoriKbn.GEPPOU_REGISTER)) {
+		} else if(shoriKbn.equals(ProcKind.GEPPOU_REGISTER)) {
 			 return "geppou";
 		}
 		

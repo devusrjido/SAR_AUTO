@@ -4,7 +4,9 @@ package sar.page.common;
 public class CSSSelector {
 	private CSSSelector(){}
 	
+	//------------------------------------------------------------------------------------------
 	// ログイン画面
+	//------------------------------------------------------------------------------------------
 	/** ユーザ名 */
 	public static final String TXT_LOGIN = "#userid";
 	/** パスワード */
@@ -12,7 +14,9 @@ public class CSSSelector {
 	/** ログイン */
 	public static final String BTN_LOGIN = ".tp-login-form button[type=submit]";
 	
+	//------------------------------------------------------------------------------------------
 	// ヘッダー部画面リンク
+	//------------------------------------------------------------------------------------------
 	/** 日報(TOP)画面リンク */
 	public static final String A_NIPPOU = "#name1";
 	/** 週報画面リンク */
@@ -24,7 +28,9 @@ public class CSSSelector {
 	/** 月報(TOP)画面リンク */
 	public static final String A_GEPPOU = "#name3";
 	
+	//------------------------------------------------------------------------------------------
 	// 日報 
+	//------------------------------------------------------------------------------------------
 	/** 日付 */
 	public static final String TXT_KINMU_DATE = "#kinmu_date";
 	/** 出勤時間(時) */
@@ -38,13 +44,17 @@ public class CSSSelector {
 	/** 勤務種別  */
 	public static final String SELECT_KINMU_SHUBETSU = "#kinmu_shubetsu_view";
 	
+	//------------------------------------------------------------------------------------------
 	// 週報計画
+	//------------------------------------------------------------------------------------------
 	/** 週報計画(一覧) 開始日 */
 	public static final String[] SHUUHOU_KEIKAKU_LIST_START_DATE = {".dctp_ichiran_table .ichiran_tr_data", " td:nth-child(0)"};
 	/** 週報計画(一覧) 月報S(ステータス) */
 	public static final String[] SHUUHOU_KEIKAKU_LIST_STATUS = {".dctp_ichiran_table .ichiran_tr_data", " td:nth-child(5)"};
 	
+	//------------------------------------------------------------------------------------------
 	// 週報実績 
+	//------------------------------------------------------------------------------------------
 	/** 作業開始日 */
 	public static final String TXT_KETSUGOU_KINMU_DATE = "#ketsugou_kinmu_date";
 	/** 評価 */
@@ -52,7 +62,9 @@ public class CSSSelector {
 	/** 評価理由 */
 	public static final String TXT_HYUOUKA_RIYUU = "#hyouka_riyuu";
 	
+	//------------------------------------------------------------------------------------------
 	// 作業一覧計画/実績 (日報,週報計画 共通)
+	//------------------------------------------------------------------------------------------
 	/** 追加 */
 	public static final String BTN_ADD = "#addLineBtn";
 	/** 部門名 */
@@ -70,18 +82,23 @@ public class CSSSelector {
 	/** 備考 */
 	public static final String[] TXT_BIKOU = {"#sagyou_" , "_view_text_bikou"};
 	
+	//------------------------------------------------------------------------------------------
 	// 週報計画/実績 共通) keikakum,jisseki
+	//------------------------------------------------------------------------------------------
 	/** 日付リンク */
 	public static final String[] A_DATE_LINK = {"nippou_", "_view_kinmu_date", "_VIEW_LABEL"};
 
+	//------------------------------------------------------------------------------------------
 	// 作業一覧(計画),月報 共通
+	//------------------------------------------------------------------------------------------
 	/** 未作成ステータスリンク */
 	public static final String[] A_STATUS_LINK = {"_status", "_VIEW_LABEL"};
 	
-	
 	public static final String[] ITIRAN_TABLE_TD = {".dctp_ichiran_table .ichiran_tr_data", " .ichiran_01_mid_data"};
 	
+	//------------------------------------------------------------------------------------------
 	// 月報
+	//------------------------------------------------------------------------------------------
 	/** アクション */
 	public static final String SELECT_ACTIONS = "#actions";
 	/** 月報(一覧) 年月 */
@@ -90,8 +107,10 @@ public class CSSSelector {
 	public static final String[] GEPPOU_LIST_STATUS = {".dctp_ichiran_table .ichiran_tr_data", " td:nth-child(2)"};
 	/** 実行*/
 	public static final String BTN_ACTION = ".btn_action";
-		
-	// ボタン
+	
+	//------------------------------------------------------------------------------------------
+	// ボタン(共通)
+	//------------------------------------------------------------------------------------------
 	/** 新規作成 */
 	public static final String BTN_CREATE_NEW = ".btn_size_07";
 	/** 保存 */

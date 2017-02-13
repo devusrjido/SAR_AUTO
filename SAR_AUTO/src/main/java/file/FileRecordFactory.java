@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import com.google.common.base.CaseFormat;
 
-import common.ResourceLoader;
+import library.ResourceLoader;
 
 /** レコードファイル読込クラス */
 public class FileRecordFactory {	
@@ -57,7 +57,7 @@ public class FileRecordFactory {
 		    String filePath = renkeiFileDir + fileNameProperties.getProperty(fileId);
 	    	br = new BufferedReader(new FileReader(filePath));
 	    	
-	    	System.out.println("### 読込ファイル : " + filePath + " ########################");
+	    	System.out.println("# 読込ファイル : [" + filePath + "] ------------------------------------------------------");
 	    	String buffer =  null;
 	    	while ((buffer = br.readLine()) != null){
 	    		// 空行は無視
@@ -65,6 +65,7 @@ public class FileRecordFactory {
 	    		
 	    		// レコードを配列に分解
 	    		String[] tmpArr = splitString(buffer, RECORD_DELIMTIER);
+	    		
 	    		record = createRecord(fileIf, tmpArr, cls);
 	    		recordList.add(record);
 	    		lineNumber++;
@@ -72,27 +73,27 @@ public class FileRecordFactory {
 	    		System.out.println(record.toString());
 			}
 	    	
-    		System.out.println("#####################################################################################");
+    		System.out.println("--------------------------------------------------------------------------------------");
 	    	
     		br.close();
 	    } catch (FileNotFoundException fnfe) {
     		fnfe.printStackTrace();
-    		return null;
+    		return new ArrayList<T>();
 	    } catch(IOException ioe) {
 			System.out.println("ファイル読込中にエラーが発生しました。 行番号：" + lineNumber);
 			ioe.printStackTrace();
-			return null;
+			return new ArrayList<T>();
 	    } catch(ArrayIndexOutOfBoundsException aie) {
 			System.out.println("ファイルフォーマットエラー。カラム数が不正です。 行番号：" + lineNumber);
 			aie.printStackTrace();
-			return null; 
+			return new ArrayList<T>(); 
 		} catch(NullPointerException npe) {
 			npe.printStackTrace();
-			return null; 
+			return new ArrayList<T>(); 
 		} catch(Exception ex) {
 			System.out.println("リフレクションでの処理中にエラーが発生しました。");
 			ex.printStackTrace();
-			return null; 
+			return new ArrayList<T>(); 
 		} finally {
 			if (br != null) {
 				br = null;
@@ -117,11 +118,11 @@ public class FileRecordFactory {
 		    String filePath = renkeiFileDir + fileNameProperties.getProperty(fileId);
 	    	br = new BufferedReader(new FileReader(filePath));
 		    
-	    	System.out.println("### 読込ファイル : " + filePath + " ########################");
+	    	System.out.println("# 読込ファイル : [" + filePath + "] ------------------------------------------------------");
 	    	String buffer = br.readLine();
 	    	
     		// 空行は無視
-    		if (buffer == null || "".equals(buffer)) {
+    		if ("".equals(buffer)) {
     			return null;
     		}
 	    		
@@ -130,7 +131,7 @@ public class FileRecordFactory {
 	    	record = createRecord(ifs, tmpArr, cls);
 	    	
 	    	System.out.println(record.toString());
-	    	System.out.println("#####################################################################################");
+    		System.out.println("--------------------------------------------------------------------------------------");
 	    	
     		br.close();
 	    } catch (FileNotFoundException fnfe) {

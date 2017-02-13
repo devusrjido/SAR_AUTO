@@ -3,7 +3,7 @@ package sar.scenario;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.DateStringUtil;
+import library.DateStringUtil;
 import main.ScenarioParamKey;
 import sar.bean.Nippou;
 import sar.bean.SagyouJisseki;
@@ -22,7 +22,7 @@ import scenario.data.ScenarioDataHolder;
 public class NippouRegisterScenario implements Scenario {
 	private ScenarioPameter _params;
 	
-	public NippouRegisterScenario(ScenarioPameter params){
+	public NippouRegisterScenario(ScenarioPameter params) {
 		_params = params;
 	}
 	
@@ -128,11 +128,9 @@ public class NippouRegisterScenario implements Scenario {
 		return list;
 	}
 
-	public void error() {
-	}
+	public void error() {}
 	
-	public void always() {
-	}
+	public void always() {}
 	
 	public String getScenarioName(){
 		return "日報(登録)";

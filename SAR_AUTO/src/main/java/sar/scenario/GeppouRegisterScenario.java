@@ -13,9 +13,13 @@ import scenario.data.ScenarioDataHolder;
  * SARにて月報(登録)・月報エクスポートを行う 
  */
 public class GeppouRegisterScenario implements Scenario {
-	ScenarioPameter _params;
+	private ScenarioPameter _params;
 	
-	public GeppouRegisterScenario(){
+	public GeppouRegisterScenario(ScenarioPameter params) {
+		_params = params;
+	}
+	
+	public GeppouRegisterScenario() {
 	}
 	
 	public void start() {		
@@ -24,7 +28,7 @@ public class GeppouRegisterScenario implements Scenario {
 		Object currentPage = dataHolder.getObject(ScenarioParamKey.CURRENT_PAGE);
 		
 		GeppouListPage geppouListPage = null;
-		if ( currentPage instanceof GeppouListPage ) {
+		if ( currentPage instanceof GeppouListPage) {
 			geppouListPage = (GeppouListPage)currentPage;
 		} else {
 			SARPageHeader header = (SARPageHeader)currentPage;
@@ -56,12 +60,9 @@ public class GeppouRegisterScenario implements Scenario {
 		dataHolder.setValue(ScenarioParamKey.CURRENT_PAGE, geppouDetailsPage);
 	}
 
-	public void error() {
-		
-	}
+	public void error() {}
 	
-	public void always() {
-	}
+	public void always() {}
 	
 	public String getScenarioName(){
 		return "月報(登録)・月報エクスポート";

@@ -2,7 +2,7 @@ package sar.page.nippou;
 
 import org.openqa.selenium.WebDriver;
 
-import main.ShoriKbn;
+import main.ProcKind;
 import sar.page.common.AbstractSARPage;
 import sar.page.common.CSSSelector;
 import sar.page.form.SagyouListForm;
@@ -87,6 +87,6 @@ public class NippouDetailsPage extends AbstractSARPage {
 	 * @return 作業一覧(実績)フォーム
 	 */
 	public SagyouListForm getSagyouListJissekiForm() {
-		return new SagyouListForm(_driver, ShoriKbn.NIPPOU_REGISTER);
+		return new SagyouListForm(_driver, ProcKind.NIPPOU_REGISTER);
 	}
 }

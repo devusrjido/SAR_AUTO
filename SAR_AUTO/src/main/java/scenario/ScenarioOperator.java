@@ -7,19 +7,17 @@ import java.util.List;
 
 /** シナリオ実行クラス */
 public class ScenarioOperator {
-	private boolean _ignoreError;
-	private List<Scenario> _scenarios;
+	private boolean _ignoreError = false;
+	private List<Scenario> _scenarios = new LinkedList<Scenario>();
 	
 	public ScenarioOperator(){
 		_scenarios = new LinkedList<Scenario>();
-		_ignoreError = false;
 	}
 	
 	/** 
 	 * @param ignoreError : シナリオの途中でエラーが発生しても以降のシナリオを実行するか
 	 */
 	public ScenarioOperator(boolean ignoreError){
-		_scenarios = new LinkedList<Scenario>();
 		_ignoreError = ignoreError;
 	}
 	
@@ -36,7 +34,7 @@ public class ScenarioOperator {
 		
 		for (Scenario scenario : _scenarios) {
 			String scenarioName = scenario.getScenarioName();
-			System.out.println(createHeader(scenarioName) + "のシナリオを開始します。");
+			System.out.println(createLogHeader(scenarioName) + "のシナリオを開始します。");
 			
 			try {
 				System.out.println("実行処理を開始します。");
@@ -58,7 +56,7 @@ public class ScenarioOperator {
 				System.out.println("必須処理が完了しました。");
 				
 				if(onError) {
-					System.out.println(createHeader(scenarioName) + "のシナリオが異常終了しました。");
+					System.out.println(createLogHeader(scenarioName) + "のシナリオが異常終了しました。");
 					
 					if (_ignoreError) {
 						System.out.println("エラーを無視して、次のシナリオを実行します。");
@@ -67,7 +65,7 @@ public class ScenarioOperator {
 						break;
 					}
 				} else {
-					System.out.println(createHeader(scenarioName) + "のシナリオが正常終了しました。");
+					System.out.println(createLogHeader(scenarioName) + "のシナリオが正常終了しました。");
 				}
 			}
 		}
@@ -80,24 +78,33 @@ public class ScenarioOperator {
 	 *　@param scenario : 実行するシナリオ
 	 */
 	public void addScenario(Scenario scenario) {
+		if(scenario == null) throw new IllegalArgumentException("scenario is null");
 		_scenarios.add(scenario);
 	}
 	
 	/**
 	 * 実行するシナリオを登録する
-	 *　@param scenario : 実行するシナリオ
+	 *　@param scenarios[] : 実行するシナリオ一覧
 	 */
 	public void addScenario(Scenario[] scenarios) {
+		if(scenarios == null) throw new IllegalArgumentException("scenarios is null");
 		for (Scenario scenario : _scenarios) {
-			_scenarios.add(scenario);
+			addScenario(scenario);
 		}
+	}
+	
+	/** 
+	 * @param ignoreError : シナリオの途中でエラーが発生しても以降のシナリオを実行するか 
+	 */
+	public void setIgnoreError(boolean ignoreError){
+		_ignoreError = ignoreError;
 	}
 	
 	/**
 	 * 標準出力先へ出力するログのヘッダー部を生成
-	 *　@param scenario : 実行するシナリオ
+	 *　@param scenarioName : シナリオ名
 	 */
-	private static String createHeader(String scenarioName) {
+	private static String createLogHeader(String scenarioName) {
 		LocalDateTime sysDateTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		String dateTime = sysDateTime.format(formatter);

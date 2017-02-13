@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 
-import main.ShoriKbn;
+import main.ProcKind;
 import sar.page.common.CSSSelector;
 import sar.page.form.SagyouListForm;
 import sar.page.shuuhou.AbstractShuuhouPage;
@@ -22,7 +22,6 @@ public class ShuuhouKeikakuDetailsPage extends AbstractShuuhouPage {
 	 */
 	public void clickDailyDateLink(String date) {
 	    findElement(_dateElementIdList.get(date)).click();
-	    System.out.println(_dateElementIdList.toString());
 	}
 	
 	/**
@@ -30,7 +29,7 @@ public class ShuuhouKeikakuDetailsPage extends AbstractShuuhouPage {
 	 * @return 日付リスト(0:月曜日 ～ 6:日曜日)
 	 */
 	public List<String> getDateList() {
-		return getDateList(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER);
+		return getDateList(ProcKind.SHUUHOU_KEIKAKU_REGISTER);
 	}
 	
 	/**
@@ -60,6 +59,6 @@ public class ShuuhouKeikakuDetailsPage extends AbstractShuuhouPage {
 	 * @return 作業一覧(計画)フォーム
 	 */
 	public SagyouListForm getSagyouListKeikakuForm() {
-		return new SagyouListForm(_driver, ShoriKbn.SHUUHOU_KEIKAKU_REGISTER);
+		return new SagyouListForm(_driver, ProcKind.SHUUHOU_KEIKAKU_REGISTER);
 	}
 }

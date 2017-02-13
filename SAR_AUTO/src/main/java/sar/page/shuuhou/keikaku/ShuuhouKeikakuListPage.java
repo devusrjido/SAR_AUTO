@@ -3,7 +3,7 @@ package sar.page.shuuhou.keikaku;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import main.ShoriKbn;
+import main.ProcKind;
 import sar.page.shuuhou.AbstractShuuhouPage;
 
 /** 週報計画(一覧)ページクラス  */
@@ -23,7 +23,7 @@ public class ShuuhouKeikakuListPage extends AbstractShuuhouPage {
 	 * @return　週報計画(詳細)ページオブジェクト
 	 */
 	public ShuuhouKeikakuDetailsPage clickUncreatedDateLink() {
-		getUncreatedDateElement(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER).click();
+		getUncreatedDateElement(ProcKind.SHUUHOU_KEIKAKU_REGISTER).click();
 		
 		waitForSARPageLoaded();
 		return new ShuuhouKeikakuDetailsPage(_driver);

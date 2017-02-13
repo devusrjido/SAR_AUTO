@@ -7,10 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 
-import common.JarOption;
-import common.WebDriverUtil;
 import file.FileID;
 import file.FileRecordFactory;
+import library.WebDriverUtil;
 import sar.bean.Nippou;
 import sar.bean.SagyouJisseki;
 import sar.bean.SagyouKeikaku;
@@ -28,98 +27,89 @@ public class Main {
 		System.out.println(Arrays.toString(args));
 		JarOption option = new JarOption(args);
 		
-		if (option.contains(JarOption.HELP)) { 
+		// helpオプションが指定されていた場合、returnする。
+		if (option.containsHelp()) { 
 			option.showHelp();
 			return;
 		}
 		
-		// 引数チェック
+		// 必須オプションのチェック
 		if (!checkRequiredOptions(option)) {
 			return;
 		}
 		
-		String[] shoriKbnList = option.getValue(JarOption.SHORI_KBN).split(",");
-		String userName = option.getValue(JarOption.SAR_USER_NAME);
-		String password = option.getValue(JarOption.SAR_PASSOWORD);
-		String renkeiFileDir = option.getValue(JarOption.RENKEI_FILE_DIR);
-		String blowserName = option.getValue(JarOption.BLOWSER_NAME).toLowerCase();
+		// オプションを取得
+		List<String> procKindList = ProcKind.splitProcKindToList(option.getProcKind());
+		String userName = option.getSarUserName();
+		String password = option.getSarPassword();
+		String renkeiFileDir = option.getRenkeiFileDirPath();
+		String blowserName = option.getBlowserName();
 		
 		ScenarioOperator operator = new ScenarioOperator();
  		WebDriver driver = null;
 		
 		try {
-			if (blowserName.equals(WebDriverUtil.BLOWSER_IE)) {
-				driver = WebDriverUtil.getInternetExplorerDriver();
-			} else if (blowserName.equals(WebDriverUtil.BLOWSER_CHROME)) { 
-				driver = WebDriverUtil.getChromeDriver();
-			} else if (blowserName.equals(WebDriverUtil.BLOWSER_FIREFOX)) {
-				String binary = option.getValue(JarOption.BLOWSER_BINARY);
-		    	if (binary != null && binary.equals("")) {
-			    	driver = WebDriverUtil.getFirefoxDriver(binary);
-		    	} else {
-		    		driver = WebDriverUtil.getFirefoxDriver();
-		    	}
-			}
-			
+			driver = WebDriverUtil.getWebDriver(blowserName, option.getBlowserBinary());
 			FileRecordFactory factory = new FileRecordFactory(renkeiFileDir);
 			
-			List<SagyouKeikaku> sagyouKeikakuRecordList = null;
-			ShuuhouJisseki shuuhouJissekiRecord = null;
-			List<Nippou> nippouRecordList = null;
-			List<SagyouJisseki> sagyouJissekiRecordList = null;
-			
-			// 処理区分別に必要なファイルを読込み
-			for (String shoriKbn : shoriKbnList) {
-				if (shoriKbn.equals(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER)) {
-					sagyouKeikakuRecordList = factory.createRecordForList(FileID.SAGYOU_LIST_KEIKAKU_REGISTER, SagyouKeikaku.class);
-					if (sagyouKeikakuRecordList == null) return;
-					
-				} else if (shoriKbn.equals(ShoriKbn.SHUUHOU_JISSEKI_REGISTER)) {
-					shuuhouJissekiRecord = factory.createRecord(FileID.SHUHOU_JISSEKI_REGISTER, ShuuhouJisseki.class);
-					if (shuuhouJissekiRecord == null) return;
-					
-				} else if (shoriKbn.equals(ShoriKbn.NIPPOU_REGISTER)) {
-					nippouRecordList = factory.createRecordForList(FileID.NIPPOU_REGISTER, Nippou.class);
-					sagyouJissekiRecordList = factory.createRecordForList(FileID.SAGYOU_LIST_JISSEKI_REGISTER, SagyouJisseki.class);
-					if (nippouRecordList == null || sagyouJissekiRecordList == null) return;
-				}
-			}
-			
 			// SARログインのシナリオを登録
+			// ログイン処理は必須のため。
 			operator.addScenario(new SARLoginScenario(new ScenarioPameter()
 				.setValue(ScenarioParamKey.WEBDRIVER, driver)
 				.setValue(ScenarioParamKey.USERNAME, userName)
 				.setValue(ScenarioParamKey.PASSWORD, password) 
 			));
 			
-			// 渡された処理区分別にシナリオを登録
-			for (String shoriKbn : shoriKbnList) {
-				// 週報計画(登録)のシナリオを追加
-				if (shoriKbn.equals(ShoriKbn.SHUUHOU_KEIKAKU_REGISTER)) {
-					operator.addScenario(new ShuuhouKeikakuRegisterScenario(new ScenarioPameter()
-						.setValue(ScenarioParamKey.SAGYOU_KEIKAKU_REGISTER_RECORD, sagyouKeikakuRecordList)
-					));
-				
-				// 週報実績(登録)のシナリオを追加
-				} else if (shoriKbn.equals(ShoriKbn.SHUUHOU_JISSEKI_REGISTER)) {
-					operator.addScenario(new ShuuhouJissekiRegisterScenario(new ScenarioPameter()
-						.setValue(ScenarioParamKey.SHUUHOU_JISSEKI_REGISTER_RECORD, shuuhouJissekiRecord)
-					));
+			// 指定された処理区分別にシナリオを登録する
+			for (String procKind : procKindList) {
+				 switch (procKind){
+					// 週報計画(登録)
+					case ProcKind.SHUUHOU_KEIKAKU_REGISTER:
+						List<SagyouKeikaku> sagyouKeikakuRecordList = 
+							factory.createRecordForList(FileID.SAGYOU_LIST_KEIKAKU_REGISTER, SagyouKeikaku.class);
+						if (sagyouKeikakuRecordList.size() == 0) return;
+						
+						operator.addScenario(new ShuuhouKeikakuRegisterScenario(new ScenarioPameter()
+								.setValue(ScenarioParamKey.SAGYOU_KEIKAKU_REGISTER_RECORD, sagyouKeikakuRecordList)
+						));
+						break;
 					
-				//　日報(登録)のシナリオを追加
-				} else if (shoriKbn.equals(ShoriKbn.NIPPOU_REGISTER)) {
-					operator.addScenario(new NippouRegisterScenario(new ScenarioPameter()
-						.setValue(ScenarioParamKey.NIPPOU_REGISTER_RECORD, nippouRecordList)
-						.setValue(ScenarioParamKey.SAGYOU_JISSEKI_REGISTER_RECORD, sagyouJissekiRecordList)
-					));
+					// 週報実績(登録)
+					case ProcKind.SHUUHOU_JISSEKI_REGISTER:
+						ShuuhouJisseki shuuhouJissekiRegisterRecord = 
+							factory.createRecord(FileID.SHUHOU_JISSEKI_REGISTER, ShuuhouJisseki.class);
+						if (shuuhouJissekiRegisterRecord == null) return;
+						
+						operator.addScenario(new ShuuhouJissekiRegisterScenario(new ScenarioPameter()
+								.setValue(ScenarioParamKey.SHUUHOU_JISSEKI_REGISTER_RECORD, shuuhouJissekiRegisterRecord)
+						));
+						break;
 					
-				//　月報(登録)のシナリオを追加
-				} else if (shoriKbn.equals(ShoriKbn.GEPPOU_REGISTER)) {
-					operator.addScenario(new GeppouRegisterScenario());
+					// 日報(登録)
+					case ProcKind.NIPPOU_REGISTER:
+						List<Nippou> nippouRecordList = factory.createRecordForList(FileID.NIPPOU_REGISTER, Nippou.class);
+						List<SagyouJisseki> sagyouJissekiRecordList = factory.createRecordForList(FileID.SAGYOU_LIST_JISSEKI_REGISTER, SagyouJisseki.class);
+						
+						if (nippouRecordList.size() == 0 || 
+							sagyouJissekiRecordList.size() == 0) return;
+						
+						operator.addScenario(new NippouRegisterScenario(new ScenarioPameter()
+								.setValue(ScenarioParamKey.NIPPOU_REGISTER_RECORD, nippouRecordList)
+								.setValue(ScenarioParamKey.SAGYOU_JISSEKI_REGISTER_RECORD, sagyouJissekiRecordList)
+						));
+						break;
+					
+					// 月報(登録)
+					case ProcKind.GEPPOU_REGISTER:
+						operator.addScenario(new GeppouRegisterScenario());
+						break;
+						
+					default:
+						// 事前に処理区分をチェックしているため、この分岐には入らない
 				}
 			}
-			
-			// シナリオ実行
+						
+			// 登録された順にシナリオを実行
 			operator.operation();
 			
 		} catch (WebDriverException e) {
@@ -132,8 +122,7 @@ public class Main {
 			return;
 		} finally {
 			if (driver != null) {
-				driver.quit();
-				driver = null;
+					driver = null;
 			}
 			
 			if (operator != null) {
@@ -145,7 +134,7 @@ public class Main {
 	}
 
 	/**
-	 * 必須引数のチェックを行う
+	 * 必須オプションのチェックを行う
 	 * @param option : 引数
 	 * @return 正常(true), 異常(false)
 	 */
@@ -157,85 +146,42 @@ public class Main {
 		}
 				
 		// 処理区分チェック
-		String shoriKbn = option.getValue(JarOption.SHORI_KBN);
-		if (!checkShoriKbn(shoriKbn)) {
+		if (ProcKind.invalidProcKind(option.getProcKind())) {
 			return false;
 		}
 		
 		// ユーザ名が未指定
-		String userName = option.getValue(JarOption.SAR_USER_NAME);
-		if (StringUtils.isEmpty(userName)) {
+		if (StringUtils.isEmpty(option.getSarUserName())) {
 			System.out.println("ユーザ名が指定されていません。");
 			return false;
 		}
 		
 		// パスワードが未指定
-		String password = option.getValue(JarOption.SAR_PASSOWORD);
-		if (StringUtils.isEmpty(password)) {
+		if (StringUtils.isEmpty(option.getSarPassword())) {
 			System.out.println("パスワードが指定されていません。");
 			return false;
 		}
 		
 		// 連携フォルダのパスが未指定
-		String renkeiFileDir = option.getValue(JarOption.RENKEI_FILE_DIR);
-		if (StringUtils.isEmpty(renkeiFileDir)) {
+		if (StringUtils.isEmpty(option.getRenkeiFileDirPath())) {
 			System.out.println("連携フォルダが指定されていません。");
 			return false;
 		}
 		
 		// ブラウザ種類が未指定
-		String blowserName = option.getValue(JarOption.BLOWSER_NAME);
+		String blowserName = option.getBlowserName();
 		if (StringUtils.isEmpty(blowserName)) {
 			System.out.println("ブラウザ種類が指定されていません。");
 			System.out.println("InternetExplorer, GoogleChrome, Firefox のいずれかを指定してください。");
 			return false;
-		} else {
-			blowserName = blowserName.toLowerCase();
-			if (!blowserName.equals(WebDriverUtil.BLOWSER_IE) &&
-				!blowserName.equals(WebDriverUtil.BLOWSER_CHROME) &&
-				!blowserName.equals(WebDriverUtil.BLOWSER_FIREFOX)) {
-				
-				System.out.println("ブラウザ種類が不正です。"); 
-				System.out.println("InternetExplorer, GoogleChrome, Firefox のいずれかを指定してください。");
-				return false;
-			}
 		}
-	
-		return true;
-	}
-	
-	/**
-	 * 指定された処理区分の中で存在しない処理区分が含まれていないかチェックします。
-	 * @param shoriKbn : 引数の処理区分
-	 * @return 含む(true), 含まない(false)
-	 */
-	public static boolean checkShoriKbn(String shoriKbn) {
-		if (StringUtils.isEmpty(shoriKbn)) {
-			System.out.println("処理区分が指定されていません。");
+		
+		if(WebDriverUtil.invalidBlowserName(blowserName)) {
+			System.out.println("ブラウザ種類が不正です。"); 
+			System.out.println("InternetExplorer, GoogleChrome, Firefox のいずれかを指定してください。");
 			return false;
 		}
-		
-		String[] shoriKbnList = shoriKbn.split(",");
-		if (shoriKbnList.length == 0) {
-			System.out.println("処理区分が指定されていません。");
-			return false;
-		}
-		
-		boolean matched = false;
-		for (String kbn : shoriKbnList) {
-			for (String shoriKbnDefine : ShoriKbn.SHORI_KBN_LIST_DEFINE){
-				if(kbn.equals(shoriKbnDefine)) {
-					matched = true;
-					break;
-				}
-			}
-			if (!matched) {
-				System.out.println("処理区分の値が不正です。");
-				return false;
-			}
-			matched = false;
-		}
-		
+
 		return true;
 	}
 }
